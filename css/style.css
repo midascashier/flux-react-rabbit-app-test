@@ -1,0 +1,19 @@
+#main {
+    border:2px solid red;
+    overflow: hidden;
+}
+
+#header {
+    border: 2px solid blue;
+}
+
+#menu {
+    border: 2px solid yellow;
+    float: left;
+    width: 100px;
+}
+
+#content {
+    border:1px solid green;
+    overflow: hidden;
+}
