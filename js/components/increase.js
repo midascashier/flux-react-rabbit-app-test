@@ -21,6 +21,10 @@ var btn = React.createClass({
         AppStore.addChangeListener(this._onChange);
     },
 
+    componentWillUnmount: function() {
+        AppStore.removeChangeListener(this._onChange);
+    },
+
     render:function(){
       return (
         <div>
