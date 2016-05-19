@@ -7,39 +7,39 @@ var AppActions = require('../actions/AppActions');
 var AppStore = require('../stores/AppStore');
 
 function getWaitState(){
-    return {
-        wait: AppStore.getWait()
-    }
+  return {
+    wait: AppStore.getWait()
+  }
 }
 
 var wait = React.createClass({
-    getInitialState: function() {
-        return getWaitState();
-    },
+  getInitialState: function(){
+    return getWaitState();
+  },
 
-    componentDidMount: function() {
-        AppStore.addChangeListener(this._onChange);
-    },
+  componentDidMount: function(){
+    AppStore.addChangeListener(this._onChange);
+  },
 
 
-    sendRequest:function(){
-        AppActions.sendRequest();
-    },
+  sendRequest: function(){
+    AppActions.sendRequest();
+  },
 
-    render:function(){
-        return (
-            <div>
-                <button onClick={this.sendRequest}>Send Request</button>
-                <div>{this.state.wait}</div>
-            </div>
-        )
-    },
+  render: function(){
+    return (
+      <div>
+        <button onClick={this.sendRequest}>Send Request</button>
+        <div>{this.state.wait}</div>
+      </div>
+    )
+  },
 
-    _onChange: function() {
-        if (this.isMounted()===true) {
-            this.setState(getWaitState());
-        }
+  _onChange: function(){
+    if(this.isMounted() === true){
+      this.setState(getWaitState());
     }
+  }
 });
 
 module.exports = wait;

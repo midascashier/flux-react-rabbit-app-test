@@ -12,22 +12,22 @@ let CHANGE_EVENT = 'change';
 let _data = {num: 0, wait: "Listening ..."};
 
 let AppStore = assign({}, EventEmitter.prototype, {
-  emitChange: function() {
+  emitChange: function(){
     this.emit(CHANGE_EVENT);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function(callback){
     this.removeListener(CHANGE_EVENT, callback);
   },
 
-  addChangeListener: function(callback) {
+  addChangeListener: function(callback){
     this.on(CHANGE_EVENT, callback);
   },
-  getNum: function() {
+  getNum: function(){
     return _data.num;
   },
 
-  getWait: function() {
+  getWait: function(){
     return _data.wait;
   }
 
@@ -42,23 +42,26 @@ function receiveReponse(data){
 }
 
 function sendRequest(){
-  stomp.send("TRANSACTION","process");
+  stomp.send("TRANSACTION", "process");
 }
 
 AppDispatcher.register(function(payload){
   let action = payload.actionType;
-  switch (action){
-    case "INCREASE":{
+  switch(action){
+    case "INCREASE":
+    {
       increaseNum();
       AppStore.emitChange();
       break;
     }
-    case "REQUEST":{
+    case "REQUEST":
+    {
       sendRequest();
       AppStore.emitChange();
       break;
     }
-    case "RESPONSE":{
+    case "RESPONSE":
+    {
       receiveReponse(payload.data);
       AppStore.emitChange();
       break;

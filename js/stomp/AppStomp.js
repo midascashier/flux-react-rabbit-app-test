@@ -1,37 +1,42 @@
 let AppActions = require('../actions/AppActions');
-import { rabbitConfig } from '../constants/AppConstants';
+import {rabbitConfig} from '../constants/AppConstants';
+import Stomp from './stomp';
 
 class stomp {
-    constructor(){
-        this.ws = new WebSocket(`ws://${rabbitConfig.get('ip')}:${rabbitConfig.get('port')}/ws`);
-        this.client = Stomp.over(this.ws);
-    }
 
-    on_error() {
-        console.log('Connection Error');
-    }
+  public ws;
+  public client;
 
-    on_connect() {
-        let callback = function(msg) {
-            if (msg.body) {
-                AppActions.receiveResponse(msg.body);
-            }
-        };
+  constructor(){
+    this.ws = new WebSocket(`ws://${rabbitConfig.get('ip')}:${rabbitConfig.get('port')}/ws`);
+    this.client = Stomp.over(this.ws);
+  }
 
-        let subscription = this.subscribe("/queue/test", callback);
-    }
+  on_error(){
+    console.log('Connection Error');
+  }
 
-    connection(){
-        this.client.connect(rabbitConfig.get('user'), rabbitConfig.get('pass'), this.on_connect, this.on_error, rabbitConfig.get('virtual'));
-    }
+  on_connect(){
+    let callback = function(msg){
+      if(msg.body){
+        AppActions.receiveResponse(msg.body);
+      }
+    };
 
-    disconnect() {
-        this.client.disconnect();
-    }
+    this.subscribe("/queue/test", callback);
+  }
 
-    send(message, queue){
-        this.client.send(`/queue/${queue}`,{"reply-to": "test"}, message);
-    }
+  connection(){
+    this.client.connect(rabbitConfig.get('user'), rabbitConfig.get('pass'), this.on_connect, this.on_error, rabbitConfig.get('virtual'));
+  }
+
+  disconnect(){
+    this.client.disconnect();
+  }
+
+  send(message, queue){
+    this.client.send(`/queue/${queue}`, {"reply-to": "test"}, message);
+  }
 }
 
 module.exports = stomp;

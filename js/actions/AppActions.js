@@ -1,22 +1,21 @@
 let AppDispatcher = require('../dispatcher/AppDispatcher');
-let AppConstants = require('../constants/AppConstants');
 
 let AppActions = {
   increase: function(){
     AppDispatcher.handleViewAction({
-      action:'INCREASE'
+      action: 'INCREASE'
     })
   },
 
   sendRequest: function(){
     AppDispatcher.handleViewAction({
-      action:'REQUEST'
+      action: 'REQUEST'
     })
   },
 
   receiveResponse: function(data){
     AppDispatcher.handleServerAction({
-      action:'RESPONSE',
+      action: 'RESPONSE',
       data: data
     })
   }
